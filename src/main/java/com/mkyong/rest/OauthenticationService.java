@@ -16,21 +16,15 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
  
 @Path("/service")
-public class OauthenticationService {
-	Twitter twitter;
-	RequestToken requestToken;
-	
+public class OauthenticationService {	
 	@GET
 	@Path("/signin")
 	public Response Signin() {
- 
-		//Twitter twitter = new TwitterFactory().getInstance();
 		URI uri=null;
 		try{
-    	    //RequestToken requestToken = twitter.getOAuthRequestToken();
-    	   // OauthenticationService oauthservice=new OauthenticationService(requestToken);
+			Twitter twitter = new TwitterFactory().getInstance();
+    	    RequestToken requestToken = twitter.getOAuthRequestToken();
     	    uri = new URI(requestToken.getAuthenticationURL());
-	    
     	}
     	catch(Exception e) {
     		e.printStackTrace();
@@ -40,17 +34,9 @@ public class OauthenticationService {
 	@GET
 	@Path("/callback")
 	public Response Callback(@QueryParam("oauth_token") String oauth_token,@QueryParam("oauth_verifier") String oauth_verifier) {
-		AccessToken accesstoken=null;
-		try {
-			accesstoken=twitter.getOAuthAccessToken(requestToken,oauth_verifier);
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(accesstoken.getScreenName()).build();	
-	}
-	OauthenticationService() throws TwitterException{
-		twitter = new TwitterFactory().getInstance();
-		requestToken = twitter.getOAuthRequestToken();
-	}
 		
+		return Response.status(200).entity("oauthverifier is "+oauth_verifier).build();
+		
+		
+	}
 }
